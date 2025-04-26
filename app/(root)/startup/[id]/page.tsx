@@ -51,7 +51,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
         </p>
       </section>
       <section style={{ width: "min(1200px, 70%)" }} className="mx-auto">
-        <div className="space-y-5 mt-10 max-w-4xl ">
+        <div className="space-y-5 mt-10 max-w-4xl mx-auto">
           <div>
             <img
               src={post.image}
