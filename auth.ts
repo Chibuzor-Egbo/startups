@@ -7,12 +7,7 @@ import { writeClient } from "./sanity/lib/write-client";
 
 // @ts-expect-error - Ignore the TypeScript error for now
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  providers: [
-    GitHub({
-      clientId: process.env.AUTH_GITHUB_ID!,
-      clientSecret: process.env.AUTH_GITHUB_SECRET!,
-    }),
-  ],
+  providers: [GitHub],
   session: {
     strategy: "jwt",
   },
