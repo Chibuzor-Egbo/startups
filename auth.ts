@@ -53,7 +53,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           id: profile?.id,
         });
         // console.log(user);
-        token.id = user.id;
+        token.id = user._id;
       }
 
       return token;

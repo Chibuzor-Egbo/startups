@@ -6,12 +6,13 @@ import { useActionState } from "react";
 import { formSchema } from "@/lib/validation";
 import z from "zod";
 import { toast } from "sonner";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import { createPitch } from "@/lib/actions";
 
 const CreateStartupForm = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [pitch, setPitch] = useState("");
-  // const router = useRouter();
+  const router = useRouter();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleFormSubmit = async (prev: any, formData: FormData) => {
@@ -25,13 +26,12 @@ const CreateStartupForm = () => {
       };
 
       await formSchema.parseAsync(formValues);
-      console.log(formValues);
 
-      //   const result = await createIdea(prev, formData, pitch);
-      // if(result.status === "SUCCESS"){
-      // add a toast here
-      // }
-      // router.push(`/startup/${result.id}`)
+      const result = await createPitch(prev, formData, pitch);
+      if (result.status === "SUCCESS") {
+        toast("Startup Added Successfully");
+        router.push(`/startup/${result._id}`);
+      }
 
       // return result
     } catch (error) {
@@ -79,7 +79,7 @@ const CreateStartupForm = () => {
           name="description"
           required
           placeholder="Startup Description"
-          className="rounded-sm indent-[10px] bg-white outline-none pr-12 py-2 border-3 border-black font-semibold"
+          className="rounded-sm bg-white outline-none py-2 px-3 border-3 border-black font-semibold"
         />
 
         {errors.description && (
@@ -109,7 +109,7 @@ const CreateStartupForm = () => {
           name="link"
           required
           placeholder="Paste the link to the image"
-          className="rounded-sm indent-[10px] bg-white outline-none pr-12 py-2 border-3 border-black font-semibold"
+          className="rounded-sm indent-[10px] bg-white outline-none py-2 border-3 border-black font-semibold"
         />
 
         {errors.link && <p>{errors.link}</p>}

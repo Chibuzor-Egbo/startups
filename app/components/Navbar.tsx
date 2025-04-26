@@ -15,7 +15,7 @@ async function Navbar() {
     await signOut();
   };
   return (
-    <header className="px-5 py-3 bg-white shadow-sm">
+    <header className="px-5 py-3 bg-white shadow-sm sticky top-0 z-1000">
       <nav className="flex justify-between items-center">
         <Link href="/">Home</Link>
 
