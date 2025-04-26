@@ -33,12 +33,15 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
         <h1 className="bg-black text-white uppercase font-extrabold px-12 py-6 text-center text-4xl">
           {post.title}
         </h1>
-        <p className="!max-w-5xl text-white font-semibold text-center text-xl">
+        <p
+          className="text-white font-semibold text-center text-xl"
+          style={{ width: "min(1000px, 70%)" }}
+        >
           {post.description}
         </p>
       </section>
-      <section>
-        <div className="space-y-5 mt-10 max-w-4xl mx-auto">
+      <section style={{ width: "min(1200px, 70%)" }} className="mx-auto">
+        <div className="space-y-5 mt-10 max-w-4xl ">
           <div>
             <img
               src={post.image}

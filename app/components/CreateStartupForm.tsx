@@ -5,6 +5,7 @@ import { Send } from "lucide-react";
 import { useActionState } from "react";
 import { formSchema } from "@/lib/validation";
 import z from "zod";
+import { toast } from "sonner";
 
 const CreateStartupForm = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,10 +22,14 @@ const CreateStartupForm = () => {
       await formSchema.parseAsync(formValues);
 
       //   const result = await createIdea(prev, formData, pitch);
+      // if(result.status === "SUCCESS"){
+      // add a toast here
+      // }
     } catch (error) {
       if (error instanceof z.ZodError) {
         const fieldErrors = error.flatten().fieldErrors;
         setErrors(fieldErrors as unknown as Record<string, string>);
+        toast.error("Something went wrong, Check your fields");
         return { ...prev, error: "Validation failed", status: "ERROR" };
       }
 
