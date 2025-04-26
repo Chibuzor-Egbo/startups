@@ -1,13 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { client } from "@/sanity/lib/client";
-import { STARTUP_BY_ID_QUERY } from "@/sanity/lib/queries";
+import {
+  PLAYLIST_BY_SLUG_QUERY,
+  STARTUP_BY_ID_QUERY,
+} from "@/sanity/lib/queries";
 import { formatDate } from "@/lib/utils";
-import { Post } from "@/lib/types";
+import { StartupCardType } from "@/lib/types";
 import Link from "next/link";
 import Image from "next/image";
 import markdownit from "markdown-it";
 import { writeClient } from "@/sanity/lib/write-client";
+import StartupCard from "@/app/components/StartupCard";
 
 const md = markdownit();
 
@@ -15,7 +19,13 @@ const md = markdownit();
 
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const id = (await params).id;
-  const post: Post = await client.fetch(STARTUP_BY_ID_QUERY, { id });
+  const [post, { select: pennywisePosts }] = await Promise.all([
+    client.fetch(STARTUP_BY_ID_QUERY, { id }),
+    client.fetch(PLAYLIST_BY_SLUG_QUERY, {
+      slug: "pennywise",
+    }),
+  ]);
+
   const parsedContent = md.render(post.pitch || "");
 
   await writeClient
@@ -87,7 +97,17 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
           <hr className="mb-5" />
         </div>
 
-        {/* TODO: editor, selector startups */}
+        {pennywisePosts?.length > 0 && (
+          <div className="max-w-4xl mx-auto">
+            <p className="">Similar</p>
+
+            <ul className="mt-7">
+              {pennywisePosts.map((post: StartupCardType, index: number) => (
+                <StartupCard key={index} post={post} />
+              ))}
+            </ul>
+          </div>
+        )}
       </section>
     </>
   );
