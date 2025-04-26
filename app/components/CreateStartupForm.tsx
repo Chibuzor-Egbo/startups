@@ -6,8 +6,13 @@ import { useActionState } from "react";
 import { formSchema } from "@/lib/validation";
 import z from "zod";
 import { toast } from "sonner";
+import { useRouter } from "next/router";
 
 const CreateStartupForm = () => {
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [pitch, setPitch] = useState("");
+  // const router = useRouter();
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleFormSubmit = async (prev: any, formData: FormData) => {
     try {
@@ -20,11 +25,15 @@ const CreateStartupForm = () => {
       };
 
       await formSchema.parseAsync(formValues);
+      console.log(formValues);
 
       //   const result = await createIdea(prev, formData, pitch);
       // if(result.status === "SUCCESS"){
       // add a toast here
       // }
+      // router.push(`/startup/${result.id}`)
+
+      // return result
     } catch (error) {
       if (error instanceof z.ZodError) {
         const fieldErrors = error.flatten().fieldErrors;
@@ -40,8 +49,7 @@ const CreateStartupForm = () => {
       };
     }
   };
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [pitch, setPitch] = useState("");
+
   const [state, formAction, isPending] = useActionState(handleFormSubmit, {
     error: "",
     status: "initial",
